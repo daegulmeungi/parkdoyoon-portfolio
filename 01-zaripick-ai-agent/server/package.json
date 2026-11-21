@@ -1,0 +1,18 @@
+{
+  "name": "zaripick-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "자리픽 API 서버 — seoul_db.db 기반 상권 분석 + 선택적 AI 해설",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "build:cache": "node --no-warnings scripts/build-cache.mjs",
+    "build:atmy": "node --no-warnings scripts/build-atmy.mjs",
+    "build:sbiz": "node --no-warnings scripts/build-sbiz-regions.mjs",
+    "start": "node --no-warnings src/server.mjs",
+    "dev": "node --no-warnings --watch src/server.mjs",
+    "test": "node --no-warnings test/run.mjs"
+  }
+}

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>입지 분석 콘솔 · 자리픽</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232E4FD8'/%3E%3Cpath d='M16 25s7-5.5 7-10.6a7 7 0 1 0-14 0C9 19.5 16 25 16 25Z' fill='none' stroke='%23FFFFFF' stroke-width='2.2' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='14' r='2.4' fill='none' stroke='%23FFFFFF' stroke-width='2.2'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="assets/css/style.css?v=20260813h" />
+</head>
+<body>
+<script src="assets/js/icons.js?v=20260811a"></script>
+
+<div class="app">
+
+  <!-- ===== 사이드바 ===== -->
+  <aside class="side no-print">
+    <div class="side-logo">
+      <a class="logo" href="index.html">
+        <span class="logo-mark"><svg class="icon"><use href="#i-pin"/></svg></span>
+        <span>ZARIPICK</span><span class="beta">BETA</span>
+      </a>
+    </div>
+
+    <nav class="side-nav">
+      <div class="side-label">워크스페이스</div>
+      <button class="side-item" disabled title="준비 중">
+        <svg class="icon"><use href="#i-grid"/></svg> 대시보드 <span class="soon">준비 중</span>
+      </button>
+      <button class="side-item on" data-view="analyze">
+        <svg class="icon"><use href="#i-search"/></svg> 입지 분석
+      </button>
+      <button class="side-item" data-view="region">
+        <svg class="icon"><use href="#i-chart"/></svg> 지역 통계
+      </button>
+      <button class="side-item" id="navChat">
+        <svg class="icon"><use href="#i-advisor"/></svg> 입지 어드바이저 <span class="tag-new">NEW</span>
+      </button>
+      <button class="side-item" data-view="archive">
+        <svg class="icon"><use href="#i-folder"/></svg> 리포트 보관함
+      </button>
+      <button class="side-item" data-view="wallet">
+        <svg class="icon"><use href="#i-receipt"/></svg> 코인 사용 내역
+      </button>
+      <div class="side-label">계정</div>
+      <button class="side-item" disabled title="준비 중">
+        <svg class="icon"><use href="#i-gear"/></svg> 설정 <span class="soon">준비 중</span>
+      </button>
+      <a class="side-item" href="data.html" target="_blank" rel="noopener">
+        <svg class="icon"><use href="#i-database"/></svg> 데이터 안내
+      </a>
+    </nav>
+
+    <div class="side-foot">
+      <div class="wallet-card">
+        <div class="wl"><svg class="icon icon-sm"><use href="#i-coin"/></svg> 보유 코인</div>
+        <div class="wv"><span id="coinCount">10</span><small>/ 월 10</small></div>
+        <div class="wnote">Free 플랜 · 매월 1일 충전</div>
+        <button class="wallet-topup" id="btnTopup">코인 충전 · 플랜 변경</button>
+      </div>
+      <div class="side-user">
+        <span class="avatar"><svg class="icon icon-sm"><use href="#i-user"/></svg></span>
+        <div>
+          <div class="un">데모 계정</div>
+          <div class="ue">베타 체험 중</div>
+        </div>
+        <button class="btn btn-ghost" id="btnLogout" title="로그아웃">
+          <svg class="icon icon-sm"><use href="#i-logout"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== 메인 ===== -->
+  <div class="main">
+    <header class="topbar no-print">
+      <div class="crumb">워크스페이스 <svg class="icon icon-sm"><use href="#i-chevronr"/></svg> <b id="crumbTitle">입지 분석</b></div>
+      <div class="right">
+        <span class="data-stamp" id="dataStamp"><span class="dot"></span> 데이터 확인 중…</span>
+        <button class="btn btn-line btn-sm" id="btnResetCoin" title="데모용 코인 초기화">
+          <svg class="icon icon-sm"><use href="#i-refresh"/></svg> 데모 초기화
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ===== VIEW: 입지 분석 ===== -->
+      <section class="view on" id="view-analyze">
+        <div class="workspace">
+
+          <!-- 조건 패널 -->
+          <aside class="panel sticky app-side no-print">
+            <div class="panel-head">
+              <div>
+                <h3>분석 조건</h3>
+                <div class="sub" id="scopeNote">서울 주요 상권 대상</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="field">
+                <label>지역 <span class="help">지역마다 제공 범위가 다릅니다</span></label>
+                <div class="region-row">
+                  <select class="select" id="sidoSel"></select>
+                  <select class="select" id="gugunSel"></select>
+                </div>
+                <div class="tier-note" id="tierNote"></div>
+              </div>
+
+              <div class="field" id="unitField">
+                <label>분석 단위 <span class="help">무엇을 순위로 볼지 고릅니다</span></label>
+                <div class="seg" id="unitGrid"></div>
+              </div>
+
+              <div class="field">
+                <label>창업 목적 <span class="help">지표 가중치에 반영</span></label>
+                <div class="seg" id="goalGrid"></div>
+              </div>
+
+              <div class="field">
+                <label>운영 형태 <span class="help">수요 기준이 달라집니다</span></label>
+                <div class="seg" id="modeGrid"></div>
+              </div>
+
+              <div class="field">
+                <label>업종</label>
+                <div class="ind-grid" id="industryGrid"></div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="field">
+                <label>가용 예산 <span class="help">보증금·권리금·인테리어 포함</span></label>
+                <div class="input-unit">
+                  <input class="input" id="budget" value="15,000" inputmode="numeric" />
+                  <span class="unit">만원</span>
+                </div>
+                <input type="range" id="budgetRange" min="3000" max="60000" step="500" value="15000" />
+                <div class="range-row"><span>3천만</span><b id="budgetLabel">1억 5,000만원</b><span>6억</span></div>
+              </div>
+
+              <div class="field">
+                <label>희망 면적</label>
+                <div class="input-unit">
+                  <input class="input" id="area" value="15" inputmode="numeric" />
+                  <span class="unit">평</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>자기자본 <span class="help">심층 분석 산출용</span></label>
+                <div class="input-unit">
+                  <input class="input" id="equity" value="8,000" inputmode="numeric" />
+                  <span class="unit">만원</span>
+                </div>
+              </div>
+
+              <div class="field" style="margin-bottom:6px">
+                <label>대표자 연령대 <span class="help">청년 정책자금 판정</span></label>
+                <select class="select" id="ageBand">
+                  <option value="young">만 39세 이하 (청년)</option>
+                  <option value="normal" selected>만 40세 이상</option>
+                </select>
+              </div>
+
+              <button class="btn btn-brand btn-block btn-lg" id="btnAnalyze" style="margin-top:16px">
+                입지 분석 실행
+              </button>
+              <p class="form-note" id="analyzeNote">실행 시 <b>1코인</b>이 차감됩니다 · 보유 <b id="noteCoin">10</b>코인</p>
+            </div>
+          </aside>
+
+          <!-- 결과 -->
+          <section>
+            <div id="resultArea">
+              <div class="empty">
+                <div class="empty-ico"><svg class="icon"><use href="#i-map"/></svg></div>
+                <h3>분석 조건을 설정해 주세요</h3>
+                <p>좌측에서 목적·업종·예산을 입력하면 서울 상권의 적합도를 계산합니다.</p>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </section>
+
+      <!-- ===== VIEW: 지역 통계 ===== -->
+      <section class="view" id="view-region">
+        <div class="workspace">
+
+          <aside class="panel sticky app-side no-print">
+            <div class="panel-head">
+              <div>
+                <h3>조회 조건</h3>
+                <div class="sub">지역 하나를 골라 지표를 확인합니다</div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="field">
+                <label>지역 <span class="help">시군구를 고르면 읍면동까지 볼 수 있습니다</span></label>
+                <div class="region-row">
+                  <select class="select" id="rgSido"></select>
+                  <select class="select" id="rgGugun"></select>
+                </div>
+                <select class="select" id="rgDong" style="margin-top:8px;display:none"></select>
+              </div>
+
+              <div class="field">
+                <label>업종 <span class="help">매출·개폐업·권리금 기준</span></label>
+                <div class="ind-grid" id="rgIndustryGrid"></div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="field">
+                <label>희망 면적 <span class="help">초기비용 산출용</span></label>
+                <div class="input-unit">
+                  <input class="input" id="rgArea" value="15" inputmode="numeric" />
+                  <span class="unit">평</span>
+                </div>
+              </div>
+
+              <div class="field" style="margin-bottom:6px">
+                <label>자기자본</label>
+                <div class="input-unit">
+                  <input class="input" id="rgEquity" value="8,000" inputmode="numeric" />
+                  <span class="unit">만원</span>
+                </div>
+              </div>
+
+              <button class="btn btn-brand btn-block btn-lg" id="btnRegion" style="margin-top:16px">
+                지역 통계 조회
+              </button>
+              <p class="form-note">통계 조회는 <b>코인이 차감되지 않습니다</b></p>
+            </div>
+          </aside>
+
+          <section>
+            <div id="regionArea">
+              <div class="empty">
+                <div class="empty-ico"><svg class="icon"><use href="#i-chart"/></svg></div>
+                <h3>지역을 골라 주세요</h3>
+                <p>인구·업종별 점포·점포당 매출·개폐업률·임대료를 한 화면에서 확인합니다.</p>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </section>
+
+      <!-- ===== VIEW: 리포트 보관함 ===== -->
+      <section class="view" id="view-archive">
+        <div class="view-head">
+          <h2>리포트 보관함</h2>
+          <p>이번 세션에서 열람·저장한 리포트 목록입니다. 정식 버전에서는 계정에 영구 보관됩니다.</p>
+        </div>
+        <div id="archiveList"></div>
+      </section>
+
+      <!-- ===== VIEW: 코인 사용 내역 ===== -->
+      <section class="view" id="view-wallet">
+        <div class="view-head">
+          <h2>코인 사용 내역</h2>
+          <p>이번 달 코인 지급·차감 내역입니다. 매월 1일 10코인이 자동 충전됩니다.</p>
+        </div>
+        <div id="walletList"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ===== 분석 리포트 팝업 ===== -->
+<div class="doc-modal" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
+  <div class="doc-panel">
+    <header class="doc-panel-head no-print">
+      <div>
+        <h2 id="reportModalTitle">분석 리포트</h2>
+        <div class="sub" id="reportModalSub"></div>
+      </div>
+      <div class="acts">
+        <button class="btn btn-dark btn-sm" id="btnPdf">
+          <svg class="icon icon-sm"><use href="#i-download"/></svg> PDF 저장 · 1코인
+        </button>
+        <button class="btn btn-line btn-sm" id="btnCloseReport" aria-label="닫기">
+          <svg class="icon icon-sm"><use href="#i-x"/></svg> 닫기
+        </button>
+      </div>
+    </header>
+    <div class="doc-panel-body" id="reportWrap"></div>
+  </div>
+</div>
+
+<!-- ===== 앱 내 확인 모달 (코인 차감) ===== -->
+<div class="modal-backdrop" id="appModal">
+  <div class="modal">
+    <div class="modal-ico" id="amIcon"><svg class="icon"><use href="#i-coin"/></svg></div>
+    <h3 id="amTitle">확인</h3>
+    <p class="sub" id="amMsg"></p>
+    <div class="cost-box" id="amCost"></div>
+    <div class="modal-actions">
+      <button class="btn btn-line btn-block" id="amCancel">취소</button>
+      <button class="btn btn-brand btn-block" id="amOk">확인</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ===== 입지 어드바이저 (AI 에이전트) ===== -->
+<button class="chat-fab no-print" id="chatFab" type="button" aria-label="입지 어드바이저 열기">
+  <svg class="icon"><use href="#i-advisor"/></svg><span>입지 어드바이저</span>
+</button>
+
+<div class="chat-backdrop no-print" id="chatBackdrop" hidden></div>
+
+<aside class="chat-panel no-print" id="chatPanel" hidden aria-label="입지 어드바이저">
+  <header class="chat-head">
+    <span class="chat-avatar"><svg class="icon"><use href="#i-advisor"/></svg></span>
+    <div class="chat-ttl">
+      <b>입지 어드바이저</b>
+      <span class="chat-status" id="chatStatus">연결 확인 중…</span>
+    </div>
+    <button class="btn btn-ghost chat-x" id="chatReset" type="button" title="대화 초기화">
+      <svg class="icon icon-sm"><use href="#i-refresh"/></svg>
+    </button>
+    <button class="btn btn-ghost chat-x" id="chatClose" type="button" title="닫기">
+      <svg class="icon icon-sm"><use href="#i-x"/></svg>
+    </button>
+  </header>
+
+  <div class="chat-log" id="chatLog"></div>
+
+  <div class="chat-sugs" id="chatSugs"></div>
+
+  <form class="chat-form" id="chatForm">
+    <textarea id="chatText" rows="1" maxlength="500" autocomplete="off"
+              placeholder="예) 강남에서 1억 5천으로 카페 자리 찾아줘"></textarea>
+    <button class="chat-send" id="chatSend" type="submit" title="보내기">
+      <svg class="icon"><use href="#i-arrow"/></svg>
+    </button>
+  </form>
+
+  <p class="chat-foot">
+    모든 수치는 SEOUL DB 관측값을 서버가 계산합니다. AI는 해석만 하며 매출은 예측하지 않습니다.
+  </p>
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js"></script>
+<script src="assets/js/api.js?v=20260813h"></script>
+<script src="assets/js/data.js?v=20260802g"></script>
+<script src="assets/js/app.js?v=20260813h"></script>
+<script src="assets/js/chat.js?v=20260811b"></script>
+</body>
+</html>

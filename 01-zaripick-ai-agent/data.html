@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>데이터 안내 · 자리픽</title>
+<meta name="description" content="자리픽이 사용하는 공공데이터 출처, 지표 산출 방식, 데이터 갱신 주기를 안내합니다." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232E4FD8'/%3E%3Cpath d='M16 25s7-5.5 7-10.6a7 7 0 1 0-14 0C9 19.5 16 25 16 25Z' fill='none' stroke='%23FFFFFF' stroke-width='2.2' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='14' r='2.4' fill='none' stroke='%23FFFFFF' stroke-width='2.2'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="assets/css/style.css?v=20260812c" />
+</head>
+<body>
+<script src="assets/js/icons.js?v=20260801"></script>
+
+<header class="mkt-header scrolled">
+  <div class="container">
+    <a class="logo" href="index.html">
+      <span class="logo-mark"><svg class="icon"><use href="#i-pin"/></svg></span>
+      <span>ZARIPICK</span><span class="beta">BETA</span>
+    </a>
+    <nav class="mkt-nav">
+      <a href="index.html#product">분석 리포트</a>
+      <a href="index.html#finance">금융 설계</a>
+      <a href="index.html#pricing">요금</a>
+      <a href="index.html#faq">Q&amp;A</a>
+    </nav>
+    <div class="actions">
+      <a class="btn btn-line btn-sm" href="index.html">서비스 소개</a>
+      <a class="btn btn-brand btn-sm" href="app.html">분석 시작</a>
+    </div>
+  </div>
+</header>
+
+<div class="page-head">
+  <div class="container">
+    <div class="sec-kicker">DATA</div>
+    <h1>데이터 안내</h1>
+    <p>
+      자리픽의 모든 지표는 공공기관이 개방한 데이터를 가공해 만듭니다.
+      어떤 기관의 어떤 데이터를 어떻게 합쳤는지, 화면의 점수가 어떤 식으로 계산되는지,
+      데이터가 언제 갱신되는지를 그대로 공개합니다.
+    </p>
+    <div class="updated">
+      최종 갱신 2026년 8월 ·
+      기준 시점: 생활인구·상권변화 2026년 1분기 / 추정매출·점포 2025년 4분기 / 임대료·공실률 2026년 2분기
+    </div>
+  </div>
+</div>
+
+<div class="container doc-layout">
+  <nav class="doc-toc" id="toc">
+    <h4>목차</h4>
+    <a href="#sources" class="on">데이터 출처</a>
+    <a href="#build">DB 구축 방식</a>
+    <a href="#metrics">지표 산출 방식</a>
+    <a href="#score">적합도 점수 계산</a>
+    <a href="#cost">비용·자금 계산</a>
+    <a href="#updates">업데이트 주기</a>
+    <a href="#limits">데이터 한계</a>
+  </nav>
+
+  <main class="doc-body">
+
+    <!-- ============ 출처 ============ -->
+    <section id="sources">
+      <h2>데이터 출처</h2>
+      <p>
+        자리픽은 자체적으로 수집한 데이터를 쓰지 않습니다.
+        아래 기관이 공개한 데이터를 내려받아 하나의 분석용 데이터베이스(<b>SEOUL DB</b>)로 통합했습니다.
+        마지막 통계청 SGIS는 적재하지 않고 서울 밖 지역을 조회할 때 API로 직접 호출합니다.
+        모두 공공 목적으로 개방된 데이터이며, 개인을 식별할 수 있는 정보는 포함하지 않습니다.
+      </p>
+
+      <div class="src-grid">
+        <div class="src">
+          <span class="org">서울특별시</span>
+          <h4>서울 열린데이터광장</h4>
+          <p>
+            행정동 단위 서울 생활인구(내국인), 상권분석서비스의 상권 영역·추정매출·점포·직장인구·상권변화지표.
+            생활인구는 통신사 기지국 신호를 행정동·시간대 단위로 집계한 값입니다.
+          </p>
+          <div class="tbls">
+            <code>floating_population</code><code>trade_area_master</code>
+            <code>trade_area_floating_population</code><code>trade_area_sales</code>
+            <code>trade_area_worker_population</code><code>trade_area_change_indicator</code>
+            <code>commercial_store</code>
+          </div>
+          <p style="margin-top:10px"><a href="https://data.seoul.go.kr/" target="_blank" rel="noopener noreferrer">data.seoul.go.kr</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">소상공인시장진흥공단</span>
+          <h4>상가(상권)정보</h4>
+          <p>
+            전국 영업 중인 상가업소의 상호·업종분류·주소·좌표. 업종 대·중·소분류를 기준으로
+            상권별 동일 업종 점포 수와 경쟁 밀도를 계산합니다.
+          </p>
+          <div class="tbls"><code>store_poi</code><code>trade_area_store_match</code></div>
+          <p style="margin-top:10px"><a href="https://www.data.go.kr/data/15083033/fileData.do" target="_blank" rel="noopener noreferrer">공공데이터포털 상가(상권)정보</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">한국부동산원</span>
+          <h4>상업용부동산 임대동향조사 (R-ONE)</h4>
+          <p>
+            상권별 임대료·공실률·전환율 통계. 소규모/중대형/집합/오피스 4개 건물 유형으로 조사되며,
+            자리픽은 소규모 상가 기준값을 사용합니다.
+          </p>
+          <div class="tbls">
+            <code>rent_index</code><code>rent_vacancy_district</code>
+            <code>conversion_rate_district</code><code>dong_rent_vacancy_applied</code>
+            <code>dong_deposit_estimated</code>
+          </div>
+          <p style="margin-top:10px"><a href="https://www.reb.or.kr/r-one/" target="_blank" rel="noopener noreferrer">R-ONE 부동산통계정보시스템</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">국토교통부</span>
+          <h4>실거래가 공개시스템</h4>
+          <p>
+            상업·업무용 부동산 매매 실거래 내역. 거래금액·전용면적·층·용도지역 등이 포함되며
+            법정동명을 행정동으로 매칭해 저장합니다.
+          </p>
+          <div class="tbls"><code>real_estate_transaction</code><code>bjd_adm_mapping</code></div>
+          <p style="margin-top:10px"><a href="https://rt.molit.go.kr/" target="_blank" rel="noopener noreferrer">rt.molit.go.kr</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">국가철도공단</span>
+          <h4>전국 도시철도역사 정보</h4>
+          <p>역명·노선·환승 여부·좌표. 상권 반경 내 지하철역 수를 교통 접근성 점수에 반영합니다.</p>
+          <div class="tbls"><code>subway_station</code><code>trade_area_subway_match</code></div>
+        </div>
+
+        <div class="src">
+          <span class="org">서울특별시</span>
+          <h4>버스정류소 위치정보</h4>
+          <p>정류소명·좌표·유형(일반차로/중앙차로/마을버스). 상권 내 정류장 밀도를 계산합니다.</p>
+          <div class="tbls"><code>bus_stop</code><code>trade_area_bus_match</code></div>
+        </div>
+
+        <div class="src">
+          <span class="org">통계청</span>
+          <h4>SGIS 통계지리정보서비스 (OpenAPI)</h4>
+          <p>
+            전국 시군구·읍면동 단위 인구주택총조사와 전국사업체조사 통계.
+            위 6개 기관 데이터가 서울에 한정되어 있어, <b>서울 밖 지역 조회에만</b> 사용합니다.
+            SEOUL DB에 적재하지 않고 요청 시점에 API로 직접 조회합니다.
+          </p>
+          <div class="tbls">
+            <code>stats/population</code><code>stats/company</code>
+            <code>startupbiz/pplsummary</code><code>addr/stage</code>
+          </div>
+          <p style="margin-top:10px"><a href="https://sgis.kostat.go.kr/developer" target="_blank" rel="noopener noreferrer">sgis.kostat.go.kr/developer</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">행정안전부</span>
+          <h4>지방행정 인허가 데이터 (LOCALDATA)</h4>
+          <p>
+            전국 인허가 업소의 인허가일·폐업일·영업상태. <b>개업률과 폐업률을 전국에서
+            산출할 수 있는 유일한 경로</b>라, 서울 밖 지역의 안정성 지표로 씁니다.
+            적재하지 않고 요청 시점에 건수만 조회합니다.
+          </p>
+          <div class="tbls">
+            <code>general_restaurants</code><code>rest_cafes</code>
+            <code>bakeries</code><code>beauty_salons</code><code>fitness_centers</code>
+          </div>
+          <p style="margin-top:10px"><a href="https://www.localdata.go.kr" target="_blank" rel="noopener noreferrer">localdata.go.kr</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">소상공인시장진흥공단</span>
+          <h4>소상공인365 상권 빅데이터</h4>
+          <p>
+            전국 행정동 × 업종의 <b>점포당 월평균 매출</b>(카드매출 기반 추정)과
+            유동인구·소득·소비·직장인구·주거인구. 위 기관들이 사업체 '수'와 '개·폐업'만 주고
+            <b>매출은 어디에도 없어</b> 이 데이터로 메웠습니다.
+            행정동 단위라 서울 상권 리포트에도 같은 코드로 붙습니다.
+          </p>
+          <div class="tbls">
+            <code>getMapRadsSaleAmt</code><code>getMapRadsStorCnt</code>
+            <code>getMapRadsPopCnt</code><code>getMapRadsWholEarnAmt</code>
+          </div>
+          <p style="margin-top:10px"><a href="https://bigdata.sbiz.or.kr" target="_blank" rel="noopener noreferrer">bigdata.sbiz.or.kr</a></p>
+        </div>
+
+        <div class="src">
+          <span class="org">한국부동산원</span>
+          <h4>R-ONE OpenAPI (전국 실시간 조회)</h4>
+          <p>
+            위 SEOUL DB에 적재된 임대료와 <b>같은 기관·다른 경로</b>입니다.
+            서울은 적재본을, <b>서울 밖은 이 API</b>를 요청 시점에 조회합니다.
+            전국 276개 상권의 임대료·공실률과 시도·업종별 <b>권리금</b>을 제공하며,
+            서울 밖에서 마지막까지 없던 축이 임대료였습니다.
+            이 데이터로 전국에서도 초기비용과 자금 조달 계획을 산출합니다.
+            시군구를 직접 조사한 상권이 없으면 시도 평균을 쓰고, 어느 쪽인지 화면에 표기합니다.
+          </p>
+          <div class="tbls">
+            <code>임대동향 지역별 임대료_소규모 상가</code>
+            <code>임대동향 지역별 공실률_소규모 상가</code>
+            <code>시도별/업종별 상가권리금</code>
+          </div>
+          <p style="margin-top:10px"><a href="https://www.reb.or.kr/r-one/portal/openapi/selectServicePage.do" target="_blank" rel="noopener noreferrer">reb.or.kr/r-one</a></p>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:18px">
+        <svg class="icon"><use href="#i-info"/></svg>
+        <span>
+          <b>서울과 전국은 제공 범위가 다릅니다.</b>
+          서울은 상권 1,030곳 단위로 유동인구·임대료·폐업률까지 분석해 적합도 점수를 산출합니다.
+          서울 밖은 시군구·행정동 단위로 인구·사업체·매출·개폐업률에 더해
+          임대료·권리금 기반 <b>초기비용과 자금 계획까지</b> 제공합니다.
+          다만 <b>교통·생활인프라 지표가 서울에만 있어 6축 적합도 점수는 산출하지 않습니다.</b>
+          두 값은 산출 기준이 달라 직접 비교할 수 없습니다.
+        </span>
+      </div>
+
+      <div class="callout" style="margin-top:12px">
+        <svg class="icon"><use href="#i-warn"/></svg>
+        <span>
+          <b>점포당 월매출은 행정동 평균 추정치입니다.</b>
+          카드매출을 기반으로 한 해당 행정동 동일 업종의 평균값이며,
+          개별 점포의 예상 매출이 아닙니다. 임대료·인건비를 뺀 이익도 아닙니다.
+          같은 동 안에서도 입지·규모에 따라 편차가 큽니다.
+        </span>
+      </div>
+
+      <p style="font-size:13px;color:var(--g500)">
+        행정동 코드 체계와 거주인구는 행정안전부 주민등록 통계 및 통계청 행정구역 코드를 기준으로 정리했습니다
+        (<code>dong_master</code>, <code>resident_population</code>).
+      </p>
+    </section>
+
+    <!-- ============ 구축 방식 ============ -->
+    <section id="build">
+      <h2>DB 구축 방식</h2>
+      <p>
+        위 데이터는 기관마다 지역 단위와 업종 분류 체계가 제각각입니다.
+        어떤 데이터는 <b>행정동</b> 기준이고, 어떤 데이터는 <b>상권</b> 기준이며,
+        임대료는 부동산원이 정한 <b>상권명</b>으로만 제공됩니다.
+        이를 하나로 붙이기 위해 아래 순서로 통합했습니다.
+      </p>
+
+      <h3>1단계 · 지역 키 통일</h3>
+      <ul>
+        <li><b>행정동 코드(<code>adm_cd</code>)</b>를 공통 키로 삼았습니다. 서울 425개 행정동이 기준점입니다.</li>
+        <li>실거래가는 <b>법정동</b>으로 제공되므로 법정동↔행정동 매핑 테이블(<code>bjd_adm_mapping</code>, 746행)로 변환했습니다.</li>
+        <li>부동산원 임대료는 <b>상권명</b>(광화문, 압구정, 홍대/합정 등)으로만 제공되어,
+          상권명↔자치구 대응표(<code>district_dong_crosswalk</code>, 72행)를 만들어 행정동까지 내렸습니다.</li>
+      </ul>
+
+      <h3>2단계 · 분석 단위를 '상권'으로 선택</h3>
+      <p>
+        행정동은 행정 편의로 나뉜 구역이라 실제 상권 범위와 맞지 않습니다.
+        그래서 서울시 상권분석서비스가 정의한 <b>1,650개 상권</b>(골목상권·발달상권·전통시장·관광특구)을
+        분석 단위로 삼고, 행정동 단위 데이터(임대료·거주인구)는 해당 상권이 속한 행정동 값을 가져다 씁니다.
+      </p>
+
+      <h3>3단계 · 업종 분류 통일</h3>
+      <p>
+        같은 '카페'라도 서울시 상권분석서비스는 <code>CS100010 커피-음료</code>,
+        소상공인시장진흥공단은 <code>음식 &gt; 비알코올 &gt; 카페</code>로 다르게 부릅니다.
+        두 체계를 자리픽의 8개 업종으로 잇는 매핑표(<code>industry_mapping</code>, 48행)를 만들어
+        매출은 상권분석서비스 코드로, 점포 수는 상가정보 소분류명으로 각각 집계합니다.
+      </p>
+
+      <h3>4단계 · 사전 집계</h3>
+      <p>
+        생활인구 테이블만 370만 행이라 요청할 때마다 계산하면 느립니다.
+        위 조인을 미리 수행해 상권별 지표를 계산해 두고, 분석 요청은 이 결과를 조회합니다.
+        조건(업종·목적·운영형태)에 따른 가중치 계산만 요청 시점에 수행합니다.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <tr><th>단계</th><th>입력</th><th>결과</th></tr>
+          <tr><td>원천 수집</td><td>6개 기관 공개 데이터</td><td>26개 테이블</td></tr>
+          <tr><td>지역 키 통일</td><td>법정동·상권명·행정동</td><td>행정동 코드 기준 정렬</td></tr>
+          <tr><td>상권 매칭</td><td>점포·지하철·버스 좌표</td><td>상권별 시설 수</td></tr>
+          <tr><td>업종 매핑</td><td>2개 분류 체계</td><td>8개 UI 업종</td></tr>
+          <tr><td>사전 집계</td><td>전체 테이블</td><td><b>분석 대상 1,030개 상권</b></td></tr>
+        </table>
+      </div>
+      <p style="font-size:13px;color:var(--g500)">
+        1,650개 중 1,030개만 분석 대상인 이유는 아래 <a href="#limits">데이터 한계</a>에 적었습니다.
+      </p>
+    </section>
+
+    <!-- ============ 지표 산출 ============ -->
+    <section id="metrics">
+      <h2>지표 산출 방식</h2>
+      <p>화면에 보이는 각 숫자가 어떻게 만들어지는지 그대로 옮겼습니다.</p>
+
+      <h3>일 평균 생활인구</h3>
+      <p>상권분석서비스는 분기 합계로 제공하므로 분기 일수로 나눠 하루 평균으로 환산합니다.</p>
+      <div class="formula">일 평균 생활인구 = 분기 총 생활인구 ÷ 분기 일수 <span class="c">(2026Q1 = 90일)</span></div>
+
+      <h3>전년 동분기 증감률</h3>
+      <div class="formula">증감률(%) = (이번 분기 일평균 ÷ 전년 동분기 일평균 − 1) × 100 <span class="c">(2026Q1 vs 2025Q1)</span></div>
+
+      <h3>연령 구성 · 피크 시간대 · 주말 비중</h3>
+      <ul>
+        <li><b>연령 구성</b> : 10대~60대 이상 6개 구간 인구를 합계로 나눈 비율</li>
+        <li><b>피크 시간대</b> : 6개 시간 구간(00~06, 06~11, 11~14, 14~17, 17~21, 21~24) 중 최댓값</li>
+        <li><b>주말 비중</b> : 토·일 합계 ÷ 주 7일 합계 × 100</li>
+      </ul>
+
+      <h3>업종 매출지수</h3>
+      <p>절대 매출액은 상권 규모에 좌우되므로, <b>점포 한 곳당 월매출</b>을 서울 중앙값과 비교한 상대값을 씁니다.</p>
+      <div class="formula">점포당 월매출 = 상권·업종 월매출 합계 ÷ 해당 업종 점포 수
+매출지수 = 점포당 월매출 ÷ <span class="k">서울 전체 중앙값</span> × 100  <span class="c">→ 100이면 서울 평균 수준</span></div>
+
+      <h3>경쟁 밀도</h3>
+      <div class="formula">ha당 점포수 = 동일 업종 점포 수 ÷ (상권 면적 ㎡ ÷ 10,000)
+경쟁 밀도(0~100) = min(ha당 점포수 ÷ 3 × 100, 100)  <span class="c">→ ha당 3곳이면 100점(과밀)</span></div>
+
+      <h3>폐업률 · 개업률</h3>
+      <p>상권분석서비스의 행정동×업종 분기 통계를 그대로 사용합니다.</p>
+      <div class="formula">폐업률(%) = 분기 폐업 점포 수 ÷ 전체 점포 수 × 100</div>
+
+      <h3>교통 접근성</h3>
+      <div class="formula">교통 점수 = min(지하철역 수, 3) ÷ 3 × <span class="k">62</span>
+           + min(버스정류장 수 ÷ 상위10% 기준값, 1) × <span class="k">38</span></div>
+      <p style="font-size:13px;color:var(--g500)">지하철 비중을 더 크게 둔 것은 상권 유입에 미치는 영향이 버스보다 크다고 보았기 때문입니다.</p>
+
+      <h3>생활 인프라</h3>
+      <div class="formula">인프라 점수 = 거주인구 점수 × 0.45 + 직장인구 점수 × 0.35 + 상권 규모 점수 × 0.20
+<span class="c">거주 : 거주인구 ÷ 35,000 × 100 (상한 100)</span>
+<span class="c">직장 : 직장인구 ÷ 상위5% 기준값 × 100 (상한 100)</span>
+<span class="c">규모 : log10(상권 면적) ÷ 6 × 100</span></div>
+
+      <h3>업종 적합도</h3>
+      <p>위 지표들을 업종 관점에서 하나로 묶은 값입니다.</p>
+      <div class="formula">업종 적합도 = 매출 점수 × 0.38 + 경쟁 점수 × 0.20
+             + 폐업 점수 × 0.20 + 수요 점수 × 0.22
+<span class="c">매출 : 매출지수 × 0.55 + 25</span>
+<span class="c">경쟁 : 100 − 경쟁밀도 × 0.6</span>
+<span class="c">폐업 : 100 − (폐업률 − 서울 업종평균) × 6 − 20</span>
+<span class="c">수요 : 일평균 생활인구 ÷ 상위5% 기준값 × 100</span></div>
+
+      <h3>임대료 · 보증금</h3>
+      <div class="formula">평당 월 임대료(만원) = 임대료(천원/㎡) × 3.3058 ÷ 10
+월 임차료 = 평당 월 임대료 × 희망 면적
+보증금 = 월 임차료 × <span class="k">10개월</span>  <span class="c">(상가 임대 관행 가정)</span></div>
+      <p style="font-size:13px;color:var(--g500)">
+        부동산원이 제공하는 <b>환산보증금</b>(전환율 기반)은 실제 계약 보증금이 아니라
+        임대료 전체를 보증금으로 환산한 개념이라 훨씬 큽니다. 참고용으로만 표시합니다.
+      </p>
+    </section>
+
+    <!-- ============ 적합도 점수 ============ -->
+    <section id="score">
+      <h2>적합도 점수 계산</h2>
+      <p>
+        최종 적합도는 6개 축을 가중 평균한 100점 만점 점수입니다.
+        <b>창업 목적</b>에 따라 가중치가 달라지고, <b>운영 형태</b>에 따라 '수요'의 정의 자체가 바뀝니다.
+      </p>
+
+      <h3>목적별 가중치</h3>
+      <div class="table-scroll">
+        <table>
+          <tr><th>창업 목적</th><th>수요</th><th>업종적합</th><th>교통</th><th>인프라</th><th>예산적합</th><th>안정성</th></tr>
+          <tr><td><b>상권 활성도</b></td><td>0.30</td><td>0.24</td><td>0.14</td><td>0.12</td><td>0.10</td><td>0.10</td></tr>
+          <tr><td><b>안정 운영</b></td><td>0.16</td><td>0.20</td><td>0.10</td><td>0.14</td><td>0.16</td><td>0.24</td></tr>
+          <tr><td><b>초기비용 절감</b></td><td>0.14</td><td>0.18</td><td>0.08</td><td>0.10</td><td>0.38</td><td>0.12</td></tr>
+        </table>
+      </div>
+
+      <h3>운영 형태에 따른 수요 정의</h3>
+      <div class="table-scroll">
+        <table>
+          <tr><th>운영 형태</th><th>수요 지표</th><th>가중치 보정</th></tr>
+          <tr><td><b>방문 중심</b></td><td>일평균 생활인구 기준</td><td>보정 없음</td></tr>
+          <tr><td><b>배달 중심</b></td><td>거주인구 × 1.1 + 직장인구 × 0.7</td><td>교통 ×0.5, 예산 ×1.3</td></tr>
+          <tr><td><b>혼합</b></td><td>두 값의 평균</td><td>보정 없음</td></tr>
+        </table>
+      </div>
+      <p>가중치를 보정한 뒤에는 합이 1이 되도록 다시 정규화합니다.</p>
+
+      <h3>안정성 점수</h3>
+      <div class="formula">안정성 = 100 − 폐업률 × 4.2 − 경쟁밀도 × 0.25 − 공실률 × 1.4
+        + 상권변화 보정 + 영업기간 보정
+<span class="c">상권변화 : 상권확장 +8 / 다이나믹 0 / 정체 −3 / 상권축소 −12</span>
+<span class="c">영업기간 : (상권 평균 영업개월 − 서울 평균) × 0.35, ±10 제한</span></div>
+
+      <h3>예산 적합도</h3>
+      <div class="formula">여유배율 = 가용 예산 ÷ 초기 개설비용
+
+여유배율 ≥ 1.6  →  92점  <span class="c">(과도한 여유는 기회비용으로 간주)</span>
+1.0 ~ 1.6      →  70 + (여유배율 − 1) × 36
+1.0 미만       →  여유배율 × 62  <span class="c">(예산 미달)</span></div>
+
+      <h3>최종 점수</h3>
+      <div class="formula">적합도 = Σ (각 축 점수 × 가중치)
+
+<span class="c">예산 미달 상권은 실행 가능성이 낮으므로 추가 감점</span>
+예산 초과 시 → 적합도 × (0.62 + 0.28 × min(여유배율, 1))</div>
+
+      <h3>색상 기준</h3>
+      <p>모든 지표는 같은 색 기준을 씁니다. 임대료·경쟁밀도·폐업률처럼 낮을수록 좋은 지표는 뒤집어 적용합니다.</p>
+      <div class="table-scroll">
+        <table>
+          <tr><th>점수</th><th>등급</th><th>색</th></tr>
+          <tr><td>85~100</td><td>매우 높음</td><td><span class="lvl s5">초록</span></td></tr>
+          <tr><td>70~84</td><td>높음</td><td><span class="lvl s4">연두</span></td></tr>
+          <tr><td>55~69</td><td>보통</td><td><span class="lvl s3">황색</span></td></tr>
+          <tr><td>40~54</td><td>낮음</td><td><span class="lvl s2">주황</span></td></tr>
+          <tr><td>0~39</td><td>매우 낮음</td><td><span class="lvl s1">빨강</span></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 비용 ============ -->
+    <section id="cost">
+      <h2>비용·자금 계산</h2>
+      <p>
+        <b>관측값</b>(임대료·공실률)과 <b>가정값</b>(인테리어·운영비 단가)을 구분해 표시합니다.
+        가정값은 공개 데이터가 없어 업종 표준치를 적용한 것이며, 실제 견적과 다를 수 있습니다.
+      </p>
+
+      <div class="formula">임차 보증금 = 월 임차료 × 10          <span class="c">가정</span>
+인테리어   = 업종 평당 단가 × 면적    <span class="c">가정</span>
+설비·집기  = 인테리어 × 35%          <span class="c">가정</span>
+──────────────────────────────
+초기 개설비용 = 보증금 + 인테리어 + 설비·집기
+
+초기 운영자금 = (월 임차료 + 월 운영비) × 3개월
+예비비        = (개설비용 + 운영자금) × 5%
+<span class="k">총 소요자금   = 개설비용 + 운영자금 + 예비비</span>
+조달 필요액   = 총 소요자금 − 자기자본</div>
+
+      <h3>업종별 가정 단가</h3>
+      <div class="table-scroll">
+        <table>
+          <tr><th>업종</th><th>평당 인테리어</th><th>월 운영비 기준</th></tr>
+          <tr><td>카페·디저트</td><td>180만원</td><td>620만원</td></tr>
+          <tr><td>베이커리</td><td>220만원</td><td>850만원</td></tr>
+          <tr><td>한식·분식</td><td>160만원</td><td>780만원</td></tr>
+          <tr><td>주점·호프</td><td>200만원</td><td>900만원</td></tr>
+          <tr><td>미용·뷰티</td><td>240만원</td><td>560만원</td></tr>
+          <tr><td>학원·교육</td><td>120만원</td><td>720만원</td></tr>
+          <tr><td>헬스·필라테스</td><td>200만원</td><td>980만원</td></tr>
+          <tr><td>편의점·무인</td><td>140만원</td><td>520만원</td></tr>
+        </table>
+      </div>
+      <p style="font-size:13px;color:var(--g500)">월 운영비는 15평 기준값이며 면적에 따라 조정됩니다 (0.55 + 0.45 × 면적÷15).</p>
+
+      <h3>손익분기 매출선</h3>
+      <p>
+        자리픽은 <b>매출을 예측하지 않습니다.</b> 점포별 편차가 커서 신뢰구간을 제시하기 어렵기 때문입니다.
+        대신 비용에서 역산한 <b>필요 매출 수준</b>만 제시합니다.
+      </p>
+      <div class="formula">월 고정비        = 월 임차료 + 월 운영비
+필요 매출(상환 전) = 월 고정비
+필요 매출(상환 후) = 월 고정비 + 월 원리금 상환액</div>
+
+      <h3>대출 상환액</h3>
+      <div class="formula">원리금균등 월 상환액 = 원금 × i × (1+i)^n ÷ ((1+i)^n − 1)
+<span class="c">i = 연이율 ÷ 12, n = 상환 개월수(거치기간 제외)</span>
+거치기간 중 = 원금 × i  <span class="c">(이자만 납입)</span></div>
+      <p style="font-size:13px;color:var(--g500)">
+        금융상품의 금리·한도·거치조건은 <b>예시값</b>입니다. 실제 조건은 취급 기관 심사 결과에 따라 결정됩니다.
+      </p>
+    </section>
+
+    <!-- ============ 업데이트 ============ -->
+    <section id="updates">
+      <h2>업데이트 주기</h2>
+      <p>
+        자리픽의 데이터는 <b>매월 1회</b> 갱신합니다.
+        원천 데이터는 기관마다 공개 주기가 다르지만, 자리픽은 이를 모아 <b>매월 첫째 주</b>에 한 번에 반영합니다.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <tr><th>데이터</th><th>원천 공개 주기</th><th>자리픽 반영</th></tr>
+          <tr><td>생활인구 · 상권 유동인구</td><td>분기</td><td rowspan="6"><b>매월 1회<br>(첫째 주)</b></td></tr>
+          <tr><td>업종별 추정매출 · 점포 통계</td><td>분기</td></tr>
+          <tr><td>상권 변화지표</td><td>분기</td></tr>
+          <tr><td>임대료 · 공실률</td><td>분기</td></tr>
+          <tr><td>상가업소 정보</td><td>분기</td></tr>
+          <tr><td>매매 실거래가</td><td>수시(일 단위 공개)</td></tr>
+        </table>
+      </div>
+
+      <p>
+        분기 데이터가 대부분이라 <b>매월 갱신해도 값이 그대로일 수 있습니다.</b>
+        새 분기 통계가 공개되는 달에 실제 수치가 바뀝니다.
+        화면 상단의 데이터 기준 표기(예: <code>2026년 1분기</code>)로 현재 어느 시점 데이터인지 확인할 수 있습니다.
+      </p>
+
+      <h3>갱신 시 하는 일</h3>
+      <ol>
+        <li>각 기관에서 최신 데이터셋을 내려받습니다.</li>
+        <li>지역 키·업종 코드를 기존 기준에 맞춰 정규화합니다.</li>
+        <li>상권별 지표를 다시 집계하고, 이전 값과 비교해 이상치를 점검합니다.</li>
+        <li>서비스에 반영하고 데이터 기준 시점 표기를 갱신합니다.</li>
+      </ol>
+
+      <p style="font-size:13px;color:var(--g500)">
+        기관 사정으로 원천 데이터 공개가 지연되면 갱신이 미뤄질 수 있습니다.
+        이 경우에도 화면에는 마지막으로 반영된 기준 시점이 그대로 표시됩니다.
+      </p>
+    </section>
+
+    <!-- ============ 한계 ============ -->
+    <section id="limits">
+      <h2>데이터 한계</h2>
+      <p>서비스가 제공하지 못하거나, 가정으로 대체한 부분을 밝힙니다.</p>
+
+      <h3>1. 매출 데이터는 골목상권만 있습니다</h3>
+      <p>
+        상권분석서비스의 추정매출 통계는 <b>골목상권 1,087곳</b>에만 수록되어 있고
+        발달상권·관광특구·전통시장은 제공되지 않습니다.
+        이 경우 같은 자치구 골목상권의 중앙값으로 대체하고, 리포트에 출처를 함께 표시합니다.
+      </p>
+      <ul>
+        <li><b>관측값</b> : 해당 상권에서 실제 집계된 매출</li>
+        <li><b>자치구 대체</b> : 같은 자치구 골목상권 중앙값</li>
+        <li><b>서울 대체</b> : 자치구에도 표본이 없을 때 서울 중앙값(100)</li>
+      </ul>
+
+      <h3>2. 권리금 데이터가 없습니다</h3>
+      <p>
+        권리금은 공개 통계가 없어 비용 산출에서 <b>제외</b>했습니다.
+        실제 계약 시 별도로 발생하므로, 리포트의 초기 개설비용은 권리금을 포함하지 않은 금액입니다.
+      </p>
+
+      <h3>3. 분석 대상은 1,030개 상권입니다</h3>
+      <p>전체 1,650개 중 아래 조건을 충족하는 상권만 분석 대상에 넣었습니다.</p>
+      <ul>
+        <li>상권 유형이 발달상권·골목상권·관광특구인 곳 (전통시장은 임대차 구조가 달라 제외)</li>
+        <li>일평균 생활인구 3,000명 이상</li>
+        <li>임대료 데이터가 확보된 곳</li>
+      </ul>
+
+      <h3>4. 서울 지역만 지원합니다</h3>
+      <p>현재는 서울시 데이터만 구축되어 있습니다. 수도권·전국 확대는 데이터 검증 후 순차 진행할 계획입니다.</p>
+
+      <h3>5. AI는 해석만 담당합니다</h3>
+      <p>
+        AI 해설 기능을 켜더라도 <b>숫자는 AI가 만들지 않습니다.</b>
+        위 공식으로 계산된 값을 AI에 전달해 문장으로 설명하게 할 뿐이며,
+        매출 예측이나 새로운 수치 생성은 프롬프트에서 금지하고 있습니다.
+        AI 없이도 규칙 기반 해설로 동일한 수치를 제공합니다.
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<footer class="footer" style="margin-top:0">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:0">
+      <div class="row">
+        <a href="index.html">서비스 소개</a>
+        <a href="legal.html#terms">이용약관</a>
+        <a href="legal.html#privacy">개인정보처리방침</a>
+        <a href="legal.html#disclaimer">책임의 한계 고지</a>
+      </div>
+      <p>© 2026 ZARIPICK. 본 페이지의 산출식은 실제 서비스 구현과 동일합니다.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 스크롤 위치에 따라 목차 현재 항목 표시
+  const secs = [...document.querySelectorAll('.doc-body section')];
+  const links = [...document.querySelectorAll('.doc-toc a')];
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id));
+    });
+  }, { rootMargin: '-88px 0px -70% 0px' });
+  secs.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

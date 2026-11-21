@@ -1,0 +1,4 @@
+.env
+seoul_db.db
+*.db
+server/cache/localdata.db
